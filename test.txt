@@ -1,6 +1,5 @@
 import csv
 import os
-
 # main.py
 from item import Item
 
@@ -71,27 +70,47 @@ def sell_item(items_dict):
 def display_items(items_dict, title):
     print(f"\n--- {title} ---")
     if items_dict:
-        print("{:<5}{:<15}{:<10}{:<10}{:<10}".format("No.", "Name", "Quantity", "Price", "Total"))
+        print("{:<5}{:<15}{:<10}{:<10}{:<10}".format(
+            "No.", "Name", "Quantity", "Price", "Total"))
+
         for i, item in enumerate(items_dict.values(), start=1):
-            print("{:<5}{:<15}{:<10}{:<10}{:<10}".format(i, item.name, item.quantity, item.price, item.total_price))
+            print("{:<5}{:<15}{:<10}{:<10.2f}{:<10.2f}".format(
+                i,
+                item.name,
+                item.quantity,
+                item.price,
+                item.total_price
+            ))
     else:
         print("No items yet.")
 
 def save_to_csv(original_items):
-    with open("stationery_items.csv", "w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Group", "Name", "Quantity", "Price", "Total"])
+    with open("stationery_items.txt", "w") as file:
+        file.write("+----------+---------------+----------+--------+--------+\n")
+        file.write("| Group    | Name          | Quantity | Price  | Total  |\n")
+        file.write("+----------+---------------+----------+--------+--------+\n")
+
         for item in original_items.values():
-            writer.writerow(["Original", item.name, item.quantity, item.price, item.total_price])
+            file.write(
+                f"| Original | {item.name:<13} | {item.quantity:<8} | "
+                f"{item.price:<6.2f} | {item.total_price:<6.2f} |\n"
+            )
+
         for item in new_items.values():
-            writer.writerow(["New", item.name, item.quantity, item.price, item.total_price])
-    print("Items saved to stationery_items.csv")
+            file.write(
+                f"| New      | {item.name:<13} | {item.quantity:<8} | "
+                f"{item.price:<6.2f} | {item.total_price:<6.2f} |\n"
+            )
 
+        file.write("+----------+---------------+----------+--------+--------+\n")
 
+    print("Items saved to stationery_items.txt")
 
 def main():
     while True:
-        print("\n--- Stationery Management System ---")
+        print("==========================================")
+        print("STATIONERY INVENTORY MANGEMENT SYSTEM")
+        print("===========================================")
         print("1. To enter new stationery item")
         print("2. To edit the stationery item ")
         print("3. To update the stationery item which was sold")
