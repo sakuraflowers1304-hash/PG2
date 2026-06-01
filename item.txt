@@ -1,0 +1,30 @@
+# item.py
+class Item:
+    def __init__(self, name, quantity, price):
+        self.name = name
+        self.quantity = quantity   # goes through setter
+        self.price = price         # goes through setter
+        self.total_price = self.calculate_total()
+
+    @property
+    def price(self):
+        return self._price
+
+    @price.setter
+    def price(self, value):
+        if value < 0:
+            raise ValueError(f"Invalid price for {self.name}: Price cannot be negative!")
+        self._price = value
+
+    @property
+    def quantity(self):
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, value):
+        if value < 0:
+            raise ValueError(f"Invalid quantity for {self.name}: Quantity cannot be negative!")
+        self._quantity = value
+
+    def calculate_total(self):
+        return round(self.quantity * self.price,2)
